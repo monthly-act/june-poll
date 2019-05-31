@@ -35,6 +35,7 @@ $ hexo generate
 
 ### Deploy to remote sites
 ``` bash
+$ npm install hexo-deployer-git --save 
 $ hexo deploy
 ```
 

@@ -79,6 +79,6 @@ theme: very-simple
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://__GITHUB_TOKEN__@github.com/github.com/monthly-act/frontend
+  repo: https://__GITHUB_TOKEN__@github.com/monthly-act/frontend.git
   branch: gh-pages
   message: "github page deploy"
