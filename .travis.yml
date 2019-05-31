@@ -1,0 +1,22 @@
+# .travis.yml
+language: node_js
+node_js:
+- "10"
+
+branches:
+  only:
+  - docs
+before_install:
+- npm install -g hexo
+install:
+- npm install
+
+before_script:
+- git config --global user.name 'monthly-act'
+- git config --global user.email 'monthly.with.act@gmail.com'
+- sed -i "s/__GITHUB_TOKEN__/${__GITHUB_TOKEN__}/" _config.yml
+
+script:
+- hexo clean
+- hexo generate
+- hexo deploy
