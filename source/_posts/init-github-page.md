@@ -1,10 +1,12 @@
 ---
 title: Github page 만들기
-date: 2019-05-31 15:29:10
-tags: 
+date: 2019-05-31 00:00:00
+tags: dev
 ---
 
-### Git 
+june-poll 을 만들어 나가며 history 정리를 위한 페이지 만들기
+
+### init Git 
 ``` bash
 $ git init
 $ git checkout -b docs
