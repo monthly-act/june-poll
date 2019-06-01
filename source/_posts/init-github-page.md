@@ -8,7 +8,7 @@ tags:
 ``` bash
 $ git init
 $ git checkout -b docs
-$ git remote add origin https://github.com/monthly-act/frontend.git
+$ git remote add origin https://github.com/monthly-act/june-poll.git
 $ git push -u origin docs
 ```
 

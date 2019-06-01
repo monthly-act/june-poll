@@ -14,7 +14,7 @@ timezone: Asia/Seoul
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://monthly-act.github.io/
-root: /frontend/
+root: /june-poll/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -79,6 +79,6 @@ theme: very-simple
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://__GITHUB_TOKEN__@github.com/monthly-act/frontend.git
+  repo: https://__GITHUB_TOKEN__@github.com/monthly-act/june-poll.git
   branch: gh-pages
   message: "github page deploy"
