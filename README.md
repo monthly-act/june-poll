@@ -1,5 +1,10 @@
 # june-poll
 
+## branches
+- master: vue source
+- docs: github page source
+- gh-pages: static source
+
 ## Project setup
 ```
 npm install
