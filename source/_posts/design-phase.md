@@ -7,9 +7,9 @@ tags: design
 ### Crazy Eight
 https://designsprintkit.withgoogle.com/methodology/phase3-sketch/crazy-eights
 
-![crazy eight](/images/crazy8-1.jpg "aimee")
-![crazy eight](/images/crazy8-2.jpg "woody")
-![crazy eight](/images/crazy8-3.jpg "ki")
+![crazy eight](/june-poll/images/crazy8-1.jpg "aimee")
+![crazy eight](/june-poll/images/crazy8-2.jpg "woody")
+![crazy eight](/june-poll/images/crazy8-3.jpg "ki")
 
 ## feature list
 ### main chat 화면 기능
