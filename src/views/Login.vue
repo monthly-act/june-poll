@@ -1,6 +1,6 @@
 <template>
-  <page-with-title-bar title="welcome">
-    <h1>Index page</h1>
+  <page-with-title-bar title="Login in with Google">
+    <h1>Login Page</h1>
   </page-with-title-bar>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 </style>

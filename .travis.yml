@@ -6,6 +6,8 @@ node_js:
 branches:
   only:
   - master
+before_install:
+  - npm install -g firebase-tools
 install:
 - npm install
 
@@ -15,3 +17,9 @@ before_script:
 
 script:
 - npm run test:unit
+- npm run build
+
+deploy:
+  provider: firebase
+  token:
+    secure: $FIREBASE_TOKEN
