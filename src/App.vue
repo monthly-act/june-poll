@@ -4,10 +4,17 @@
   </div>
 </template>
 
+<script>
+export default {
+};
+</script>
 <style lang="scss">
 * {
   margin: 0;
   padding: 0;
+}
+body {
+  overscroll-behavior: contain;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

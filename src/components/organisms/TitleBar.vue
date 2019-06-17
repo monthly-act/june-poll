@@ -3,6 +3,7 @@
     <div class="menu-button-wrapper">
       <menu-button @click="onClickMenu" />
     </div>
+    <div class="user-name">{{loginUser.name}}</div>
     <nav-drawer :show="isShowing" @close="onClose"/>
   </div>
 </template>
@@ -17,6 +18,11 @@ export default {
     return {
       isShowing: false,
     };
+  },
+  computed: {
+    loginUser() {
+      return this.$store.state.loginUser || {};
+    },
   },
   methods: {
     onClickMenu() {
@@ -35,7 +41,7 @@ export default {
   height: 50px;
   background-color: black;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   overflow: hidden;
 }
@@ -45,5 +51,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.user-name {
+  margin-right: 10px;
+  color: white;
 }
 </style>

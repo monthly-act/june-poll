@@ -1,13 +1,21 @@
 <template>
   <md-drawer :md-active.sync="showNavigation"
              md-swipeable>
-    <div @click="onClickToRouteLogin">Login</div>
+    <md-list>
+      <md-list-item>
+        <login-menu-item @click="onClickLoginMenu"/>
+      </md-list-item>
+      <md-divider></md-divider>
+    </md-list>
   </md-drawer>
 </template>
 
 <script>
 
+import LoginMenuItem from '@/components/organisms/LoginMenuItem.vue';
+
 export default {
+  components: { LoginMenuItem },
   props: {
     show: {
       type: Boolean,
@@ -30,9 +38,8 @@ export default {
     };
   },
   methods: {
-    onClickToRouteLogin() {
+    onClickLoginMenu() {
       this.showNavigation = false;
-      this.$router.push('/login');
     },
   },
 };
