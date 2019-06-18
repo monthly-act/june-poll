@@ -3,46 +3,74 @@
     <h1>User Page</h1>
 
     <div class="room-list-wrapper">
-      <md-list>
-        <md-list-item v-for="room in rooms"
-                      :key="room._id">
-          <span class="md-list-item-text">
-            {{room.name}}
-          </span>
-          <span class="md-list-item-text">
-            {{room.create_date}}
-          </span>
-        </md-list-item>
-      </md-list>
+      <chat-room-list v-if="rooms.length > 0" :rooms="rooms" />
+      <md-empty-state
+        v-else
+        class="md-primary"
+        md-icon="touch_app"
+        md-label="welcome"
+        md-description="Please create new room">
+      </md-empty-state>
     </div>
 
     <div class="add-button-wrapper">
-      <md-button class="md-fab">
-        <md-icon>add</md-icon>
-      </md-button>
+      <floating-add-button @click="onClickAddRoom"/>
+    </div>
+
+    <div class="add-dialog-wrapper" v-if="showDialog">
+      <room-add-dialog
+        :show-dialog="showDialog"
+        @cancel="onCancel"
+        @save="onSave"
+      />
     </div>
   </page-with-title-bar>
 </template>
 
 <script>
+import FloatingAddButton from '@/components/molecules/FloatingAddButton.vue';
+import ChatRoomList from '@/components/organisms/ChatRoomList.vue';
+import RoomAddDialog from '@/components/organisms/RoomAddDialog.vue';
 import PageWithTitleBar from '@/components/templates/PageWithTitleBar.vue';
-import { BACKEND_URL } from '@/constants/backend';
+
+import { fetchRooms, createNewRoom } from '@/services/room-service';
 
 export default {
   components: {
+    RoomAddDialog,
+    ChatRoomList,
+    FloatingAddButton,
     PageWithTitleBar,
   },
-  async mounted() {
-    const { data } = await fetch(`${BACKEND_URL}/api/rooms`, {
-      credentials: 'include',
-    }).then(res => res.json());
-    console.log(data);
-    this.rooms = data;
+  mounted() {
+    this.fetchMyRooms();
   },
   data() {
     return {
-      rooms: '',
+      rooms: [],
+      showDialog: false,
     };
+  },
+  methods: {
+    async fetchMyRooms() {
+      this.rooms = await fetchRooms();
+    },
+    async saveMyRoom(room) {
+      await createNewRoom(room);
+
+      this.fetchMyRooms(room);
+    },
+    onClickAddRoom() {
+      this.showDialog = true;
+    },
+    onSave({ link, title }) {
+      this.showDialog = false;
+
+      this.saveMyRoom({ link, title });
+    },
+    onCancel() {
+      this.showDialog = false;
+    },
   },
 };
 </script>
