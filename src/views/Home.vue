@@ -1,16 +1,18 @@
 <template>
   <page-with-title-bar title="welcome">
-    <h1>welcome</h1>
     <div class="join-wrapper">
-      <span class="domain-wrapper">chat.monthly-ki.com/</span>
       <md-field>
-        <md-input
-          v-model="initial"
-          placeholder="room-id"
-        />
+        <label>Room Id</label>
+        <md-input v-model="roomId" />
       </md-field>
+      <md-button
+        class="md-accent"
+        @click="onClickJoin"
+        :disabled="!roomId"
+      >
+        JOIN
+      </md-button>
     </div>
-    <md-button class="md-accent">JOIN</md-button>
   </page-with-title-bar>
 </template>
 
@@ -23,32 +25,24 @@ export default {
   },
   data() {
     return {
-      initial: '',
+      roomId: '',
     };
+  },
+  methods: {
+    onClickJoin() {
+      this.$router.push(`/room/${this.roomId}`);
+    },
   },
 };
 </script>
 
 <style scoped>
-  .join-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    padding: 50px 10px 0 10px;
-    width: 100%;
-  }
-
-  .domain-wrapper {
-    display: flex;
-    align-items: center;
-    padding-right: 10px;
-    white-space: nowrap;
-    font-size: 16px;
-    height: 32px;
-    color: gray;
-  }
-  .md-field {
-    margin: 0;
-    width: 130px;
-  }
+.join-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 50px;
+  width: 100%;
+  height: calc(100% - 150px);
+}
 </style>

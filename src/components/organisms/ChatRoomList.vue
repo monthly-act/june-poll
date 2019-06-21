@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     doCopyLink(link) {
-      const linkUrl = `${window.location.origin}${link}`;
+      const linkUrl = `${window.location.origin}/room${link}`;
       this.$copyText(linkUrl)
         .then(({ text }) => {
           this.showSnackbar = true;
