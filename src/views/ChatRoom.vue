@@ -9,9 +9,19 @@
 
     <div class="message-list-wrapper">
       <div class="message-item"
+           v-for="msg in oldMessages"
+           :key="msg.id">
+        <md-chip class="my-primary">
+          {{msg.sender}} > {{msg.status}} > {{msg.msg}} > {{msg.create_date | date_format}}
+        </md-chip>
+      </div>
+
+      <div class="message-item"
            v-for="msg in messages"
            :key="msg.id">
-        <md-chip class="my-primary">{{msg.status}} > {{msg.msg}}</md-chip>
+        <md-chip class="my-primary">
+          {{msg.sender}} > {{msg.status}} > {{msg.msg}} > {{msg.create_date | date_format}}
+        </md-chip>
       </div>
     </div>
 
@@ -28,15 +38,17 @@
 </template>
 
 <script>
+import moment from 'moment';
 import io from 'socket.io-client';
+import { fetchMessagesInRoom } from '../services/room-service';
 
 export default {
   data() {
     return {
       title: 'welcome',
-      isConnected: false,
-      message: '',
       isGood: true,
+      message: '',
+      oldMessages: [],
       messages: [],
     };
   },
@@ -45,38 +57,66 @@ export default {
       type: String,
       required: true,
     },
+    myName: {
+      type: String,
+      default: 'unknwon',
+    },
   },
-  mounted() {
-    const {
-      protocol,
-      hostname,
-    } = window.location;
-    const port = process.env.VUE_APP_SOCKET_PORT;
+  async mounted() {
+    this.fetchOldMessages();
 
-    this.socket = io(`${protocol}//${hostname}:${port}/rooms/${this.roomId}`);
-
-    this.socket.on('connect', () => {
-      console.log('connected');
-    });
-
-    this.socket.on('new_message', ({ id, status, msg }) => {
-      this.messages.push({ id, status, msg });
-    });
+    this.onSocket();
   },
   destroyed() {
     this.socket.emit('disconnect');
     console.log('disconnected');
   },
+  filters: {
+    date_format(value) {
+      return moment(value).format('hh:mm:ss');
+    },
+  },
   computed: {
     statusText() {
       return this.isGood ? 'GOOD' : 'BAD';
     },
+    socketUrl() {
+      const {
+        protocol,
+        hostname,
+      } = window.location;
+      const port = process.env.VUE_APP_SOCKET_PORT;
+
+      return `${protocol}//${hostname}:${port}/rooms/${this.roomId}`;
+    },
   },
   methods: {
+    async fetchOldMessages() {
+      this.oldMessages = await fetchMessagesInRoom(this.roomId);
+    },
+    onSocket() {
+      this.socket = io(this.socketUrl);
+      this.socket.on('connect', () => {
+        console.log('connected');
+      });
+
+      this.socket.on('new_message', ({
+        id, status, msg, sender, create_date,
+      }) => {
+        this.messages.push({
+          id, status, msg, sender, create_date,
+        });
+      });
+    },
     sendMessage() {
       if (!this.message) return;
 
-      this.socket.emit('message', { status: this.statusText, msg: this.message });
+      this.socket.emit('message', {
+        status: this.statusText,
+        msg: this.message,
+        sender: 'test',
+        roomId: this.roomId,
+      });
       this.message = null;
     },
   },
