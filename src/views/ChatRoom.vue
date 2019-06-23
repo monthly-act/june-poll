@@ -8,21 +8,8 @@
     </md-toolbar>
 
     <div class="message-list-wrapper">
-      <div class="message-item"
-           v-for="msg in oldMessages"
-           :key="msg.id">
-        <md-chip class="my-primary">
-          {{msg.sender}} > {{msg.status}} > {{msg.msg}} > {{msg.create_date | date_format}}
-        </md-chip>
-      </div>
-
-      <div class="message-item"
-           v-for="msg in messages"
-           :key="msg.id">
-        <md-chip class="my-primary">
-          {{msg.sender}} > {{msg.status}} > {{msg.msg}} > {{msg.create_date | date_format}}
-        </md-chip>
-      </div>
+      <message-item-list :messages="oldMessages" />
+      <message-item-list :messages="messages" />
     </div>
 
     <div class="message-input-wrapper">
@@ -38,11 +25,13 @@
 </template>
 
 <script>
-import moment from 'moment';
 import io from 'socket.io-client';
-import { fetchMessagesInRoom } from '../services/room-service';
+import { fetchMessagesInRoom } from '@/services/room-service';
+
+import MessageItemList from '@/components/molecules/MessageItemList.vue';
 
 export default {
+  components: { MessageItemList },
   data() {
     return {
       title: 'welcome',
@@ -70,11 +59,6 @@ export default {
   beforeDestroy() {
     console.log('disconnected');
     this.socket.emit('disconnected');
-  },
-  filters: {
-    date_format(value) {
-      return moment(value).format('hh:mm:ss');
-    },
   },
   computed: {
     statusText() {
@@ -106,10 +90,10 @@ export default {
       });
 
       this.socket.on('message', ({
-        id, status, msg, sender, create_date,
+        id, status, msg, sender, createDate,
       }) => {
         this.messages.push({
-          id, status, msg, sender, create_date,
+          id, status, msg, sender, createDate,
         });
       });
     },
@@ -128,7 +112,6 @@ export default {
       const list = this.$el.querySelector('.message-list-wrapper');
       list.scrollTo({
         top: list.scrollHeight,
-        behavior: 'smooth',
       });
     },
   },
@@ -146,12 +129,6 @@ export default {
 .message-list-wrapper {
   flex: 1;
   overflow: scroll;
-}
-.message-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: fit-content;
 }
 
 .message-input-wrapper {
