@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-chip class="my-primary message-item"
+    <md-chip :class="['message-item', {'md-accent': msg.status === 'GOOD'}]"
              v-for="msg in messages"
              :key="msg.id">
       {{msg.sender}} : {{msg.status}} : {{msg.msg}} > {{msg.createDate | date_format}}
