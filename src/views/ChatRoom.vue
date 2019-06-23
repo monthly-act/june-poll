@@ -67,9 +67,9 @@ export default {
 
     this.onSocket();
   },
-  destroyed() {
-    this.socket.emit('disconnect');
+  beforeDestroy() {
     console.log('disconnected');
+    this.socket.emit('disconnected');
   },
   filters: {
     date_format(value) {
@@ -85,22 +85,27 @@ export default {
         protocol,
         hostname,
       } = window.location;
-      const port = process.env.VUE_APP_SOCKET_PORT;
+      const socketPort = process.env.VUE_APP_SOCKET_PORT;
 
-      return `${protocol}//${hostname}:${port}/rooms/${this.roomId}`;
+      return `${protocol}//${hostname}:${socketPort}/`;
     },
+  },
+  updated() {
+    this.scrollToBottom();
   },
   methods: {
     async fetchOldMessages() {
       this.oldMessages = await fetchMessagesInRoom(this.roomId);
     },
     onSocket() {
-      this.socket = io(this.socketUrl);
+      this.socket = io(this.socketUrl, {
+        query: `r_var=${this.roomId}`,
+      });
       this.socket.on('connect', () => {
         console.log('connected');
       });
 
-      this.socket.on('new_message', ({
+      this.socket.on('message', ({
         id, status, msg, sender, create_date,
       }) => {
         this.messages.push({
@@ -119,6 +124,13 @@ export default {
       });
       this.message = null;
     },
+    scrollToBottom() {
+      const list = this.$el.querySelector('.message-list-wrapper');
+      list.scrollTo({
+        top: list.scrollHeight,
+        behavior: 'smooth',
+      });
+    },
   },
 
 };
@@ -133,6 +145,7 @@ export default {
 }
 .message-list-wrapper {
   flex: 1;
+  overflow: scroll;
 }
 .message-item {
   display: flex;
