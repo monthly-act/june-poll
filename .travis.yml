@@ -25,4 +25,4 @@ deploy:
   skip_cleanup: true
   acl: public_read
   local_dir: dist
-  region: "ap-northeast-2"
+  region: ap-northeast-2
