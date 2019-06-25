@@ -23,13 +23,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+
+$main-color: #1e1e2d;
+
   .page-wrapper {
     width: 100vw;
     height: 100vh;
     position: relative;
   }
   .content {
+    background-color: $main-color;
     width: 100%;
     height: calc(100% - 50px);
     padding: 20px;

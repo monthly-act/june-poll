@@ -9,6 +9,9 @@ export default {
 };
 </script>
 <style lang="scss">
+
+$main-color: #1e1e2d;
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-color: $main-color;
   color: #2c3e50;
   padding: 0;
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="room-wrapper">
     <md-toolbar>
+      <span id='connetion-status' v-bind:class="{ active: isLive }">connected: {{isLive}}</span>
       <h3 class="md-title" style="flex: 1">{{title}}</h3>
       <md-button class="md-icon-button">
         <md-icon>more_vert</md-icon>
@@ -13,8 +14,14 @@
     </div>
 
     <div class="message-input-wrapper">
+      <fieldset>
+        <input id='feedback-like' type="radio" v-model="isGood" v-bind:value='true'>
+        <label for='feedback-like'>Good</label>
+
+        <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
+        <label for='feedback-dislike'>Bad</label>
+      </fieldset>
       <md-field>
-        <md-switch v-model="isGood">{{statusText}}</md-switch>
         <md-textarea v-model="message" md-autogrow/>
         <md-button class="md-icon-button" @click="sendMessage">
           <md-icon>send</md-icon>
@@ -34,6 +41,7 @@ export default {
   components: { MessageItemList },
   data() {
     return {
+      isLive: true,
       title: 'welcome',
       isGood: true,
       message: '',
@@ -49,6 +57,10 @@ export default {
     myName: {
       type: String,
       default: 'unknwon',
+    },
+    messages: {
+      type: Array,
+      default: () => [],
     },
   },
   async mounted() {
@@ -120,6 +132,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$main-color: #1e1e2d;
+$main-color-dark: #08090a;
+$color-positive: #38375D;
+$color-negative: #B9B9BE;
 .room-wrapper {
   display: flex;
   flex-direction: column;
@@ -132,14 +148,109 @@ export default {
 }
 
 .message-input-wrapper {
-  background-color: black;
-  padding: 10px 10px;
+  background-color: $main-color-dark;
+  box-shadow: 0 -1px 21px rgba(255, 255, 255, 0.1);
+  padding: .8em;
   .md-field {
     padding-top: 0;
     margin-bottom: 0;
+    > div {
+      display: block;
+      label {
+        display: block !important;
+        position: relative;
+      }
+    }
   }
 }
 textarea.md-textarea {
   max-height: 100px;
+  background: #fff;
+  padding: .65em;
+  margin: .1em;
+  border-radius: 2em;
+  min-height: 41px;
+}
+
+button {
+  height: inherit;
+  > .md-ripple {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.md-icon-font {
+  color: rgba(255,255,255,.7);
+}
+
+.md-toolbar {
+  background-color: rgba(255,255,255,.6);
+  min-height: 40px;
+  padding: 0;
+}
+
+.md-title {
+  font-size: .8em;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.md-switch {
+  color: #fdd;
+  display: block;
+}
+fieldset {
+  border: none;
+  height: 50px;
+  label {
+    background: none;
+    border-radius: 2em;
+    display: inline-block;
+    padding: .65em;
+    width: 47%;
+    &:hover{
+    }
+  }
+  label[for=feedback-like] {
+    background: $color-positive;
+    color: #fff;
+    margin-right: 1em;
+  }
+  label[for=feedback-dislike]{
+    background: $color-negative;
+  }
+
+  input[type="radio"]{
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  input[type="radio"]:checked+label[for=feedback-like] {
+    background: #292771;
+    font-weight: 800;
+  }
+  input[type="radio"]:checked+label[for=feedback-dislike] {
+    background: #e6e6e6;
+    font-weight: 800;
+  }
+}
+
+#connetion-status {
+  background: url('../assets/faces.png') no-repeat 0 0;
+  width: 12px;
+  height: 12px;
+  text-indent: -999em;
+  border: 1px solid #fff;
+  &.active{
+    border: 1px solid yellowgreen;
+  }
 }
 </style>
