@@ -34,6 +34,7 @@
 <script>
 import io from 'socket.io-client';
 import { fetchMessagesInRoom } from '@/services/room-service';
+import { BACKEND_SOCKET_URL } from '@/constants/backend';
 
 import MessageItemList from '@/components/molecules/MessageItemList.vue';
 
@@ -76,15 +77,6 @@ export default {
     statusText() {
       return this.isGood ? 'GOOD' : 'BAD';
     },
-    socketUrl() {
-      const {
-        protocol,
-        hostname,
-      } = window.location;
-      const socketPort = process.env.VUE_APP_SOCKET_PORT;
-
-      return `${protocol}//${hostname}:${socketPort}/`;
-    },
   },
   updated() {
     this.scrollToBottom();
@@ -94,7 +86,7 @@ export default {
       this.oldMessages = await fetchMessagesInRoom(this.roomId);
     },
     onSocket() {
-      this.socket = io(this.socketUrl, {
+      this.socket = io(BACKEND_SOCKET_URL, {
         query: `r_var=${this.roomId}`,
       });
       this.socket.on('connect', () => {

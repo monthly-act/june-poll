@@ -2,9 +2,10 @@
   <md-dialog :md-active.sync="showDialogSync">
     <md-dialog-title>Create new room</md-dialog-title>
     <div class="dialog-content-wrapper">
-      <md-field>
+      <md-field :class="{'md-invalid': errorMessage}">
         <label>Link Url</label>
-        <md-input v-model="link" class="md-accent" disabled></md-input>
+        <md-input v-model="link" class="md-accent"></md-input>
+        <span class="md-error">{{errorMessage}}</span>
       </md-field>
 
       <md-field :class="{'md-invalid': !title}">
@@ -38,6 +39,10 @@ export default {
     showDialog: {
       type: Boolean,
       default: false,
+    },
+    errorMessage: {
+      type: String,
+      default: '',
     },
   },
   mounted() {

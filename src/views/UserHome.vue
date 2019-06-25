@@ -20,6 +20,7 @@
     <div class="add-dialog-wrapper" v-if="showDialog">
       <room-add-dialog
         :show-dialog="showDialog"
+        :error-message="errorMessage"
         @cancel="onCancel"
         @save="onSave"
       />
@@ -33,7 +34,7 @@ import ChatRoomList from '@/components/organisms/ChatRoomList.vue';
 import RoomAddDialog from '@/components/organisms/RoomAddDialog.vue';
 import PageWithTitleBar from '@/components/templates/PageWithTitleBar.vue';
 
-import { fetchRooms, createNewRoom } from '@/services/room-service';
+import { fetchRooms, fetchRoomByLink, createNewRoom } from '@/services/room-service';
 
 export default {
   components: {
@@ -49,6 +50,7 @@ export default {
     return {
       rooms: [],
       showDialog: false,
+      errorMessage: '',
     };
   },
   methods: {
@@ -56,17 +58,26 @@ export default {
       this.rooms = await fetchRooms();
     },
     async saveMyRoom(room) {
+      const existRoom = await fetchRoomByLink(room.link);
+      if (existRoom) {
+        return { msg: 'the link is existed' };
+      }
+
       await createNewRoom(room);
 
       this.fetchMyRooms(room);
+      return null;
     },
     onClickAddRoom() {
       this.showDialog = true;
     },
-    onSave({ link, title }) {
-      this.showDialog = false;
-
-      this.saveMyRoom({ link, title });
+    async onSave({ link, title }) {
+      const err = await this.saveMyRoom({ link, title });
+      if (err) {
+        this.errorMessage = err.msg;
+      } else {
+        this.showDialog = false;
+      }
     },
     onCancel() {
       this.showDialog = false;
@@ -78,6 +89,8 @@ export default {
 <style scoped lang="scss">
 .room-list-wrapper {
   margin-top: 30px;
+  max-height: 70%;
+  overflow: scroll;
 }
 .add-button-wrapper {
   position: fixed;
