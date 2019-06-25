@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { BACKEND_URL } from '@/constants/backend';
+import { BACKEND_WEB_URL } from '@/constants/backend';
 
 export default {
   name: 'LoginMenuItem',
@@ -41,11 +41,11 @@ export default {
   },
   methods: {
     onClickGoogleLogin() {
-      window.open(`${BACKEND_URL}/api/auth/google`, '_self');
+      window.open(`${BACKEND_WEB_URL}/api/auth/google`, '_self');
       this.$emit('click');
     },
     async onClickLogout() {
-      await fetch(`${BACKEND_URL}/api/auth/logout`);
+      await fetch(`${BACKEND_WEB_URL}/api/auth/logout`);
 
       this.$store.dispatch('logout');
       this.$router.push('/?logout');
