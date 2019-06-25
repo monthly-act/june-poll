@@ -8,6 +8,12 @@ async function fetchRooms() {
   return data;
 }
 
+async function fetchRoomByLink(link) {
+  const { data: { data } } = await axios.get(`${BACKEND_WEB_URL}/api/rooms/${link}`);
+
+  return data;
+}
+
 async function fetchMessagesInRoom(roomId) {
   const { data: { data } } = await axios.get(`${BACKEND_WEB_URL}/api/rooms/${roomId}/messages`);
 
@@ -20,6 +26,7 @@ async function createNewRoom(room) {
 
 export {
   fetchRooms,
+  fetchRoomByLink,
   fetchMessagesInRoom,
   createNewRoom,
 };
