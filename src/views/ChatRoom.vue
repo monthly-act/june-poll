@@ -23,7 +23,7 @@
       </fieldset>
       <md-field>
         <md-textarea v-model="message" md-autogrow/>
-        <md-button class="md-icon-button" @click="sendMessage">
+        <md-button class="md-icon-button" @click="sendMessage" :disabled="!isLive">
           <md-icon>send</md-icon>
         </md-button>
       </md-field>
@@ -33,21 +33,24 @@
 
 <script>
 import io from 'socket.io-client';
-import { fetchMessagesInRoom } from '@/services/room-service';
+import { fetchMessagesInRoom, fetchRoomByLink } from '@/services/room-service';
 import { BACKEND_SOCKET_URL } from '@/constants/backend';
+import uuidv4 from 'uuid/v4';
 
 import MessageItemList from '@/components/molecules/MessageItemList.vue';
+
 
 export default {
   components: { MessageItemList },
   data() {
     return {
       isLive: false,
-      title: 'welcome',
+      title: 'not found',
       isGood: true,
       message: '',
       oldMessages: [],
       messages: [],
+      myName: '',
     };
   },
   props: {
@@ -55,19 +58,23 @@ export default {
       type: String,
       required: true,
     },
-    myName: {
-      type: String,
-      default: 'unknwon',
-    },
   },
   async mounted() {
-    this.fetchOldMessages();
+    this.myName = uuidv4();
 
-    this.onSocket();
+    const roomInfo = await fetchRoomByLink(this.roomId);
+    if (roomInfo) {
+      this.title = roomInfo.title;
+
+      this.fetchOldMessages();
+
+      this.onSocket();
+    }
   },
   beforeDestroy() {
-    console.log('disconnected');
-    this.socket.emit('disconnected');
+    if (this.socket) {
+      this.socket.emit('disconnected');
+    }
   },
   computed: {
     statusText() {
@@ -86,7 +93,6 @@ export default {
         query: `r_var=${this.roomId}`,
       });
       this.socket.on('connect', () => {
-        console.log('connected');
         this.isLive = true;
       });
 
@@ -104,7 +110,7 @@ export default {
       this.socket.emit('message', {
         status: this.statusText,
         msg: this.message,
-        sender: 'test',
+        sender: this.myName,
         roomId: this.roomId,
       });
       this.message = null;
@@ -132,6 +138,7 @@ $color-negative: #B9B9BE;
   height: 100vh;
 }
 .message-list-wrapper {
+  flex: 1;
   margin-top: 40px;
   padding: 10px 0;
   overflow: scroll;

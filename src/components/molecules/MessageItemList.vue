@@ -58,6 +58,7 @@ $color-negative: #B9B9BE;
       @include message;
       background-color: $color-positive;
       color: #fff;
+      text-align: left;
     }
   }
 
