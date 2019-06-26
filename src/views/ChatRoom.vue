@@ -5,7 +5,10 @@
         <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
         <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
       </div>
-      <h3 class="md-title" style="flex: 1">{{title}}</h3>
+      <div class="md-title">
+        <span>{{title}}</span>
+        <span>{{`접속: ${connectedUser} 명`}}</span>
+      </div>
     </md-toolbar>
 
     <div class="message-list-wrapper">
@@ -51,6 +54,7 @@ export default {
       oldMessages: [],
       messages: [],
       myName: '',
+      connectedUser: 1,
     };
   },
   props: {
@@ -95,6 +99,9 @@ export default {
       this.socket.on('connect', () => {
         this.isLive = true;
       });
+      this.socket.on('connected_user_count', (count) => {
+        this.connectedUser = count;
+      });
 
       this.socket.on('message', ({
         id, status, msg, sender, createDate,
@@ -112,8 +119,10 @@ export default {
         msg: this.message,
         sender: this.myName,
         roomId: this.roomId,
+      }, (data) => {
+        console.log(data);
+        this.message = null;
       });
-      this.message = null;
     },
     scrollToBottom() {
       const list = this.$el.querySelector('.message-list-wrapper');
@@ -198,13 +207,12 @@ button {
 }
 
 .md-title {
+  flex: 1;
   font-size: 1em;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: normal;
-  text-align: left;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 30px;
 }
 
 .md-switch {
