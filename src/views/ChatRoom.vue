@@ -1,11 +1,11 @@
 <template>
   <div class="room-wrapper">
     <md-toolbar>
-      <span id='connetion-status' v-bind:class="{ active: isLive }">connected: {{isLive}}</span>
+      <div class="connection-status">
+        <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
+        <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
+      </div>
       <h3 class="md-title" style="flex: 1">{{title}}</h3>
-      <md-button class="md-icon-button">
-        <md-icon>more_vert</md-icon>
-      </md-button>
     </md-toolbar>
 
     <div class="message-list-wrapper">
@@ -42,7 +42,7 @@ export default {
   components: { MessageItemList },
   data() {
     return {
-      isLive: true,
+      isLive: false,
       title: 'welcome',
       isGood: true,
       message: '',
@@ -58,10 +58,6 @@ export default {
     myName: {
       type: String,
       default: 'unknwon',
-    },
-    messages: {
-      type: Array,
-      default: () => [],
     },
   },
   async mounted() {
@@ -91,6 +87,7 @@ export default {
       });
       this.socket.on('connect', () => {
         console.log('connected');
+        this.isLive = true;
       });
 
       this.socket.on('message', ({
@@ -135,11 +132,13 @@ $color-negative: #B9B9BE;
   height: 100vh;
 }
 .message-list-wrapper {
-  flex: 1;
+  margin-top: 40px;
+  padding: 10px 0;
   overflow: scroll;
 }
 
 .message-input-wrapper {
+  width: 100%;
   background-color: $main-color-dark;
   box-shadow: 0 -1px 21px rgba(255, 255, 255, 0.1);
   padding: .8em;
@@ -155,6 +154,7 @@ $color-negative: #B9B9BE;
     }
   }
 }
+
 textarea.md-textarea {
   max-height: 100px;
   background: #fff;
@@ -178,13 +178,16 @@ button {
 }
 
 .md-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
   background-color: rgba(255,255,255,.6);
   min-height: 40px;
   padding: 0;
 }
 
 .md-title {
-  font-size: .8em;
+  font-size: 1em;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -224,7 +227,7 @@ fieldset {
     top: 0;
     left: 0;
   }
-  
+
   input[type="radio"]:checked+label[for=feedback-like] {
     background: #292771;
     font-weight: 800;
@@ -235,14 +238,9 @@ fieldset {
   }
 }
 
-#connetion-status {
-  background: url('../assets/faces.png') no-repeat 0 0;
-  width: 12px;
-  height: 12px;
-  text-indent: -999em;
-  border: 1px solid #fff;
-  &.active{
-    border: 1px solid yellowgreen;
-  }
+.connection-status {
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
 }
 </style>
