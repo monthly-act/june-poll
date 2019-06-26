@@ -1,6 +1,6 @@
 <template>
   <div class="room-wrapper">
-    <md-toolbar>
+    <md-toolbar class="toolbar-wrapper">
       <div class="connection-status">
         <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
         <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
@@ -137,11 +137,16 @@ $color-negative: #B9B9BE;
   width: 100vw;
   height: 100vh;
 }
+
+.toolbar-wrapper {
+  background-color: $main-color-dark;
+}
+
 .message-list-wrapper {
   flex: 1;
   margin-top: 40px;
   padding: 10px 0;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .message-input-wrapper {

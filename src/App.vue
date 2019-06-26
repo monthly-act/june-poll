@@ -15,10 +15,12 @@ $main-color: #1e1e2d;
 * {
   margin: 0;
   padding: 0;
+  scrollbar-color: dark;
 }
 body {
   overscroll-behavior: contain;
 }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

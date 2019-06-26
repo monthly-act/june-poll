@@ -88,5 +88,6 @@ export default {
   .md-dialog {
     width: 300px;
     height: 500px;
+    background: #ffdddd;
   }
 </style>
