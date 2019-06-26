@@ -36,6 +36,7 @@ $color-negative: #B9B9BE;
   border-radius: 2em;
   padding: .5em 0.9em;
   word-break: break-word;
+  text-align: left;
 }
 
 .msg-box {
@@ -58,7 +59,6 @@ $color-negative: #B9B9BE;
       @include message;
       background-color: $color-positive;
       color: #fff;
-      text-align: left;
     }
   }
 
@@ -68,7 +68,6 @@ $color-negative: #B9B9BE;
       @include message;
       background-color: $color-negative;
       color: #000;
-      text-align: right;
     }
   }
   span {
