@@ -1,10 +1,10 @@
 <template>
   <page-with-title-bar title="welcome">
     <div class="join-wrapper">
-      <field>
+      <fieldset>
         <label>Join a presentation</label>
         <input v-model="roomId" />
-      </field>
+      </fieldset>
       <button
         class="btn-primary"
         @click="onClickJoin"
@@ -46,7 +46,8 @@ $main-color-dark: #08090a;
   padding: 1em;
   width: 100%;
   height: calc(100% - 150px);
-  field {
+  fieldset {
+    border: 0;
     margin: 0 0 .8em;
   }
   label,

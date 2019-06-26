@@ -188,7 +188,6 @@ button {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,.6);
   min-height: 40px;
   padding: 0;
 }
