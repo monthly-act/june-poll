@@ -1,9 +1,10 @@
 # june-poll
 
 ## branches
-- master: vue source
-- docs: github page source
-- gh-pages: static source
+- `master`: vue source
+- `docs`: github page source
+- `gh-pages`: static source
+- `dev`: dev branch
 
 ## Project setup
 ```
