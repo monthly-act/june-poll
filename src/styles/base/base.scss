@@ -1,0 +1,17 @@
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  @include border-box;
+}
+
+* {
+  scrollbar-color: dark;
+}
+
+body {
+  background-color: $main-color;
+  font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+  overscroll-behavior: contain;
+}

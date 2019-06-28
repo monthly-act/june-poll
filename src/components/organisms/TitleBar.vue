@@ -36,24 +36,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.title-bar-wrapper {
-  width: 100vw;
-  height: 50px;
-  background-color: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  overflow: hidden;
-}
-.menu-button-wrapper {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.user-name {
-  margin-right: 10px;
-  color: white;
-}
+@import '../../styles/components/titlebar.scss';
 </style>

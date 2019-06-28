@@ -77,17 +77,5 @@ export default {
 </script>
 
 <style scoped>
-  .dialog-content-wrapper {
-    padding: 0 30px;
-  }
-  .button-wrapper {
-    position: absolute;
-    right: 20px;
-    bottom: 30px;
-  }
-  .md-dialog {
-    width: 300px;
-    height: 500px;
-    background: #ffdddd;
-  }
+@import '../../styles/components/RoomAddDialog.scss';
 </style>
