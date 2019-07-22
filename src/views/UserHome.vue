@@ -86,6 +86,15 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-@import '../styles/views/UserHome.scss';
+<style scoped lang='scss'>
+.room-list-wrapper {
+  margin-top: 30px;
+  max-height: 70%;
+  overflow: scroll;
+}
+.add-button-wrapper {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
 </style>

@@ -56,6 +56,35 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-@import '../../styles/components/LoginMenuItem.scss';
+<style scoped lang='scss'>
+.login-wrapper {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-info-wrapper {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  .user-email {
+    margin-left: 10px;
+  }
+}
+
+.button-wrapper {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: underline;
+}
 </style>

@@ -24,5 +24,16 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-@import '../../styles/components/PageWithTitleBar.scss';
+.page-wrapper {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.content {
+  background-color: $main-color;
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 20px;
+  color: #ffffff;
+}
 </style>
