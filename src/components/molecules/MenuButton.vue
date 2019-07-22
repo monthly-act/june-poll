@@ -1,8 +1,5 @@
 <template>
-  <md-button class="md-icon-button"
-             @click="$emit('click')">
-    <md-icon>menu</md-icon>
-  </md-button>
+  <button @click="$emit('click')">menu</button>
 </template>
 
 <script>

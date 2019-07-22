@@ -1,15 +1,15 @@
 <template>
   <div class="room-wrapper">
-    <md-toolbar class="toolbar-wrapper">
+    <div class="toolbar-wrapper">
       <div class="connection-status">
         <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
         <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
       </div>
-      <div class="md-title">
+      <div class="connection-bar-title">
         <span>{{title}}</span>
         <span>{{`접속: ${connectedUser} 명`}}</span>
       </div>
-    </md-toolbar>
+    </div>
 
     <div class="message-list-wrapper">
       <message-item-list :messages="oldMessages" />
@@ -18,18 +18,13 @@
 
     <div class="message-input-wrapper">
       <fieldset>
+        <textarea v-model="message" cols="40"></textarea>
         <input id='feedback-like' type="radio" v-model="isGood" v-bind:value='true'>
         <label for='feedback-like'>Good</label>
-
         <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
         <label for='feedback-dislike'>Bad</label>
+        <button @click="sendMessage" :disabled="!isLive">send</button>
       </fieldset>
-      <md-field>
-        <md-textarea v-model="message" md-autogrow/>
-        <md-button class="md-icon-button" @click="sendMessage" :disabled="!isLive">
-          <md-icon>send</md-icon>
-        </md-button>
-      </md-field>
     </div>
   </div>
 </template>

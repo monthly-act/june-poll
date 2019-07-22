@@ -21,9 +21,17 @@
   background-color: $main-color-dark;
   box-shadow: 0 -1px 21px rgba(255, 255, 255, 0.1);
   padding: .8em;
-  .md-field {
+  fieldset {
     padding-top: 0;
     margin-bottom: 0;
+    textarea {
+      max-height: 100px;
+      background: #fff;
+      margin: .1em;
+      border-radius: 2em;
+      height: 1.5em;
+      width: 100%;
+    }
     > div {
       display: block;
       label {
@@ -34,37 +42,18 @@
   }
 }
 
-textarea.md-textarea {
-  max-height: 100px;
-  background: #fff;
-  padding: .65em;
-  margin: .1em;
-  border-radius: 2em;
-  min-height: 41px;
-}
+
 
 button {
   height: inherit;
-  > .md-ripple {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+  // > .md-ripple {
+  //   position: absolute;
+  //   top: 50%;
+  //   transform: translateY(-50%);
+  // }
 }
 
-.md-icon-font {
-  color: rgba(255,255,255,.7);
-}
-
-.md-toolbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-height: 40px;
-  padding: 0;
-}
-
-.md-title {
+.connection-bar-title {
   flex: 1;
   font-size: 1em;
   color: #fff;
@@ -73,10 +62,6 @@ button {
   padding-right: 30px;
 }
 
-.md-switch {
-  color: #fdd;
-  display: block;
-}
 fieldset {
   border: none;
   height: 50px;
@@ -85,7 +70,7 @@ fieldset {
     border-radius: 2em;
     display: inline-block;
     padding: .65em;
-    width: 47%;
+    width: 40%;
     &:hover{
     }
   }
@@ -119,4 +104,9 @@ fieldset {
   width: 20px;
   height: 20px;
   margin: 0 10px;
+  img {
+    height: 20px;
+    width: 20px;
+    margin: 0 10px;
+  }
 }
