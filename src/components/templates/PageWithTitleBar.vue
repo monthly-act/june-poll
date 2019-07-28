@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-    <title-bar :title="title"/>
+    <title-bar class="title-wrapper" :title="title"/>
     <div class="content">
       <slot></slot>
     </div>
@@ -29,11 +29,17 @@ export default {
   height: 100vh;
   position: relative;
 }
+.title-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+}
 .content {
   background-color: $main-color;
   width: 100%;
-  height: calc(100% - 50px);
-  padding: 20px;
+  height: 100%;
   color: #ffffff;
+  padding-top: 50px;
 }
 </style>

@@ -1,25 +1,19 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="room in rooms" :key="room._id">
-        <div v-if="room.open">timer> timer</div>
-        <div v-else>timer_off</div>
-
-        <div class="md-list-item-text">
-          <span class="md-title">{{room.title}}</span>
-          <span class="md-caption">{{room.create_date | dateFormat}}</span>
-        </div>
-
-        <button class="md-icon-button"
-                @click="doCopyLink(room.link)">
-          link
-        </button>
-
-      </li>
-    </ul>
-
-    <div>
-      <span>{{copiedLink}}</span>
+  <div class="room-list-wrapper">
+    <div
+      class="room-list-item"
+      v-for="room in rooms"
+      :key="room._id">
+      <div class="room-info">
+        <span class="room-title">
+          {{room.title}}
+        </span>
+        <span class="room-create-date">
+          {{room.create_date | dateFormat}}
+        </span>
+      </div>
+      <div class="open-button"
+            @click="onClickOpenRoom(room.link)"></div>
     </div>
   </div>
 </template>
@@ -39,25 +33,51 @@ export default {
       return moment(value).format('YYYY-MM-DD hh:mm:ss');
     },
   },
-  data() {
-    return {
-      showSnackbar: false,
-      copiedLink: null,
-    };
-  },
   methods: {
-    doCopyLink(link) {
-      const linkUrl = `${window.location.origin}/room/${link}`;
-      this.$copyText(linkUrl)
-        .then(({ text }) => {
-          this.showSnackbar = true;
-          this.copiedLink = text;
-        });
+    onClickOpenRoom(link) {
+      this.$router.push(`/room/${link}`);
     },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.room-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
 
+.room-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.375em 1.6875em;
+  border-bottom: 1px solid #000000;
+
+  .room-info {
+    display: flex;
+    flex-direction: column;
+    .room-title {
+      color: #ffffff;
+      font-size: 1em;
+      padding-bottom: 0.4375em;
+    }
+    .room-create-date {
+      color: #838383;
+      font-size: 0.8125em;
+    }
+  }
+
+  .open-button {
+    width: 1.25em;
+    height: 1.25em;
+    background-image: url("../../assets/ic-open.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  }
+}
 </style>

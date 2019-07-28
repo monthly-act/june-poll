@@ -1,8 +1,7 @@
 <template>
   <div
-    class="btn-wrapper"
+    :class="['btn-wrapper', {disabled}]"
     @click.self="onClick"
-    :disabled="disabled"
   >
     <slot></slot>
     {{text}}
@@ -44,5 +43,9 @@ export default {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+
+    &.disabled {
+      background-color: #707070;
+    }
   }
 </style>

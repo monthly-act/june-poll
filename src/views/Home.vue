@@ -18,13 +18,15 @@
         text="Join"
       />
     </div>
-
-      <div class="signin-wrapper">
-        <a-label class="or-label" text="or" />
-        <google-sign-in-button
-          class="button-wrapper"
-          @click="onClickSignIn" />
-      </div>
+    <div class="signin-wrapper" v-if="!isSignedIn">
+      <a-label class="or-label" text="or" />
+      <google-sign-in-button
+        class="button-wrapper"
+        @click="onClickSignIn" />
+    </div>
+    <div class="speed-dial-wrapper" v-else>
+      <signed-user-menu-button :filters="['JOIN_ROOM']"/>
+    </div>
   </div>
 </template>
 
@@ -33,11 +35,14 @@ import ALabel from '@/components/atoms/ALabel.vue';
 import AButton from '@/components/atoms/AButton.vue';
 import PrefixInput from '@/components/molecules/PrefixInput.vue';
 import GoogleSignInButton from '@/components/molecules/GoogleSignInButton.vue';
+import SignedUserMenuButton from '@/components/organisms/SignedUserMenuButton.vue';
 
 import { BACKEND_WEB_URL } from '@/constants/backend';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
+    SignedUserMenuButton,
     PrefixInput,
     ALabel,
     AButton,
@@ -47,6 +52,11 @@ export default {
     return {
       roomId: '',
     };
+  },
+  computed: {
+    ...mapGetters({
+      isSignedIn: 'isSignedIn',
+    }),
   },
   methods: {
     onClickJoin() {
@@ -114,5 +124,13 @@ export default {
     text-align: center;
     padding: 40px 0;
   }
+}
+
+.speed-dial-wrapper {
+  position: fixed;
+  bottom: 1.1875em;
+  right: 1.1875em;
+  width: 100%;
+  height: fit-content;
 }
 </style>
