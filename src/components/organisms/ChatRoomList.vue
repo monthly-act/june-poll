@@ -3,7 +3,7 @@
     <ul>
       <li v-for="room in rooms" :key="room._id">
         <div v-if="room.open">timer> timer</div>
-        <div v-else>timer_off></div>
+        <div v-else>timer_off</div>
 
         <div class="md-list-item-text">
           <span class="md-title">{{room.title}}</span>
@@ -11,14 +11,17 @@
         </div>
 
         <button class="md-icon-button"
-        @click="doCopyLink(room.link)">link</button>
-        
+                @click="doCopyLink(room.link)">
+          link
+        </button>
+
       </li>
     </ul>
 
     <div>
       <span>{{copiedLink}}</span>
     </div>
+  </div>
 </template>
 
 <script>

@@ -4,13 +4,9 @@
 
     <div class="room-list-wrapper">
       <chat-room-list v-if="rooms.length > 0" :rooms="rooms" />
-      <md-empty-state
-        v-else
-        class="md-primary"
-        md-icon="touch_app"
-        md-label="welcome"
-        md-description="Please create new room">
-      </md-empty-state>
+      <div v-else>
+        Please create new room
+      </div>
     </div>
 
     <div class="add-button-wrapper">
