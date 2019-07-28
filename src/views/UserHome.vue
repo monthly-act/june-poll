@@ -44,6 +44,7 @@ export default {
     PageWithTitleBar,
   },
   mounted() {
+    debugger;
     this.fetchMyRooms();
   },
   data() {

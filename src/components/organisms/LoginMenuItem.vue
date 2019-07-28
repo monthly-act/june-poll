@@ -4,7 +4,7 @@
       <md-avatar v-if="pictureUrl" class="md-small" style="margin: 0;">
         <img :src="pictureUrl" alt="avatar" />
       </md-avatar>
-      <md-icon v-else>account_circle</md-icon>
+      <div v-else class='md-icon'>account_circle</div>
       <div class="user-email">{{email}}</div>
     </div>
     <div class="button-wrapper">

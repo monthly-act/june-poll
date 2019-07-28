@@ -6,6 +6,7 @@
 
 export default {
   mounted() {
+    debugger; 
     const { email, name, picture } = this.$route.query;
 
     this.$store.dispatch('login', { email, name, picture });

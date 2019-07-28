@@ -18,12 +18,18 @@
 
     <div class="message-input-wrapper">
       <fieldset>
-        <textarea v-model="message" cols="40"></textarea>
+        <textarea v-model="message" cols="40" rows='1'></textarea>
+        <!-- <input id='feedback-question' type="radio" v-model="messageType" v-bind:value='true'>
+        <label for='feedback-question'>Question</label>
         <input id='feedback-like' type="radio" v-model="isGood" v-bind:value='true'>
         <label for='feedback-like'>Good</label>
         <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
-        <label for='feedback-dislike'>Bad</label>
-        <button @click="sendMessage" :disabled="!isLive">send</button>
+        <label for='feedback-dislike'>Bad</label> -->
+        <div id='btn-submit-wrapper'>
+          <button class='btn-submit' id='btn-question' @click="sendMessage(MessageType = 'question')" :disabled="!isLive">Question</button>
+          <button class='btn-submit' id='btn-negative' @click="sendMessage(MessageType = 'negative')" :disabled="!isLive">Dislike</button>
+          <button class='btn-submit' id='btn-positive' @click="sendMessage(MessageType = 'positive')" :disabled="!isLive">Like</button>
+        </div>
       </fieldset>
     </div>
   </div>
@@ -50,6 +56,7 @@ export default {
       messages: [],
       myName: '',
       connectedUser: 1,
+      MessageType: ''
     };
   },
   props: {
@@ -61,7 +68,7 @@ export default {
   async mounted() {
     this.myName = uuidv4();
 
-    const roomInfo = await fetchRoomByLink(this.roomId);
+    const roomInfo = {};//await fetchRoomByLink(this.roomId);
     if (roomInfo) {
       this.title = roomInfo.title;
 
@@ -78,6 +85,17 @@ export default {
   computed: {
     statusText() {
       return this.isGood ? 'GOOD' : 'BAD';
+      
+    },
+    MessageType() {
+      console.log('checking is good ???', this.isGood);
+      if (this.messageType === 'positive') {
+        return 'GOOD';
+      } else if (this.messageType === 'negative') {
+        return 'BAD';
+      } else if (this.messageType === 'question') {
+        return 'QQ';
+      }
     },
   },
   updated() {
@@ -104,11 +122,16 @@ export default {
         this.messages.push({
           id, status, msg, sender, createDate,
         });
+        console.log(this.messages);
+
       });
     },
-    sendMessage() {
+    sendMessage(msgType) {
+      console.log('show me the msgType :::: ' , msgType);
+      
       if (!this.message) return;
 
+      console.log('/////', this.statusText, this.message, this.myName, this.roomId);
       this.socket.emit('message', {
         status: this.statusText,
         msg: this.message,
@@ -131,6 +154,11 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+
+fieldset {
+  padding: 0;
+}
+
 .room-wrapper {
   display: flex;
   flex-direction: column;
@@ -144,7 +172,7 @@ export default {
 
 .message-list-wrapper {
   flex: 1;
-  margin-top: 40px;
+  // margin-top: 40px;
   padding: 10px 0;
   overflow-y: scroll;
 }
@@ -153,17 +181,18 @@ export default {
   width: 100%;
   background-color: $main-color-dark;
   box-shadow: 0 -1px 21px rgba(255, 255, 255, 0.1);
-  padding: .8em;
+  padding: 10px;
   fieldset {
     padding-top: 0;
     margin-bottom: 0;
     textarea {
-      max-height: 100px;
+      max-height: 5em;
       background: #fff;
-      margin: .1em;
-      border-radius: 2em;
-      height: 1.5em;
-      width: 100%;
+      margin: 0.1em 0 .5em;
+      border-radius: 1em;
+      width: calc(100vw - 20px);
+      padding: .2em;
+      min-height: 2em;
     }
     > div {
       display: block;
@@ -197,13 +226,15 @@ button {
 
 fieldset {
   border: none;
-  height: 50px;
   label {
     background: none;
-    border-radius: 2em;
+    border-radius: 1.5em;
     display: inline-block;
-    padding: .65em;
-    width: 40%;
+    font-size: 13px;
+    height: 32px;
+    padding: .7em;
+    text-align: center;
+    width: 30%;
     &:hover{
     }
   }
@@ -214,6 +245,12 @@ fieldset {
   }
   label[for=feedback-dislike]{
     background: $chat-color-negative;
+  }
+  label[for=feedback-question]{
+    border: 1px solid #fff;
+    color: #fff;
+    margin-right: 1em;
+
   }
 
   input[type="radio"]{
@@ -241,6 +278,36 @@ fieldset {
     height: 20px;
     width: 20px;
     margin: 0 10px;
+  }
+}
+
+
+/// 
+
+#btn-submit-wrapper {
+  display: flex;
+  justify-content: center;
+  > .btn-submit {
+    border-radius: 2em;
+    color: #fff;
+    font-size: 13px;
+    height: 32px;
+    width: calc((100vw - 40px)/3);
+    &:not(last-child) {
+      margin-right: 10px;
+    }
+  }
+  #btn-positive {
+    background-color: $chat-color-positive;
+    border: none;
+  }
+  #btn-negative {
+    background-color: $chat-color-negative;
+    border: none;
+  }
+  #btn-question {
+    background: none;
+    border: 1px solid #fff;
   }
 }
 </style>

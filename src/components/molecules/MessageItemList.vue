@@ -31,8 +31,8 @@ export default {
 <style scoped lang='scss'>
 @mixin message {
   max-width: 60%;
-  border-radius: 2em;
-  padding: .5em 0.9em;
+  border-radius: 1.5em;
+  padding: .7em .9em;
   word-break: break-word;
   text-align: left;
 }
@@ -48,7 +48,7 @@ export default {
   height: fit-content;
   display: flex;
   justify-content: flex-start;
-  padding: .8em;
+  padding: .45em .9em;
   align-items: flex-end;
 
   &.msg-good {
@@ -65,7 +65,7 @@ export default {
     p {
       @include message;
       background-color: $chat-color-negative;
-      color: #000;
+      color: #fff;
     }
   }
   span {

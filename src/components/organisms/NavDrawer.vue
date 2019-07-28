@@ -1,13 +1,13 @@
 <template>
-  <md-drawer :md-active.sync="showNavigation"
-             md-swipeable>
-    <md-list>
-      <md-list-item>
+  <!-- <md-drawer :md-active.sync="showNavigation"
+             md-swipeable> -->
+
+    <ul>
+      <li>
         <login-menu-item @click="onClickLoginMenu"/>
-      </md-list-item>
-      <md-divider></md-divider>
-    </md-list>
-  </md-drawer>
+
+      </li>
+    </ul>
 </template>
 
 <script>

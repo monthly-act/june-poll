@@ -10,7 +10,7 @@ describe('MenuButton', () => {
 
   describe('interactions', () => {
     it('should ', () => {
-      wrapper.find('.md-icon-button').vm.$emit('click');
+      wrapper.find('button').vm.$emit('click');
 
       expect(wrapper.emitted('click')).toBeTruthy();
     });

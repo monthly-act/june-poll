@@ -1,7 +1,7 @@
 <template>
-  <md-button class="md-fab" @click="$emit('click')">
-    <md-icon>add</md-icon>
-  </md-button>
+  <button  class="md-fab" @click="$emit('click')">
+    add
+  </button>
 </template>
 
 <script>

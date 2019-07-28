@@ -15,10 +15,10 @@
         
       </li>
     </ul>
-
     <div>
       <span>{{copiedLink}}</span>
     </div>
+  </div>
 </template>
 
 <script>
