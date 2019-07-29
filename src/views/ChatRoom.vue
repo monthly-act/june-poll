@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span id='name-nickname'>{{nickname}}</span>
     <div class="nickname-wrapper" v-if="!nickname">
       <nick-name-form @change="onChangeNickname"/>
     </div>
@@ -16,6 +15,7 @@
                   {'show-owner': isOwner }]">👑</span>
           <span>{{`접속: ${connectedUser} 명`}}</span>
         </div>
+        <more-button class="more-button-wrapper" :items="moreItems" @click="onClickMoreItem"/>
       </div>
 
       <div class="message-list-wrapper">
@@ -23,7 +23,7 @@
         <message-item-list :messages="messages" />
       </div>
 
-      <div class="message-input-wrapper">
+      <div v-show="!isPresentationMode" class="message-input-wrapper">
         <fieldset>
           <a-textarea class="message-input" v-model="message" autoresize/>
           <div id='btn-submit-wrapper'>
@@ -53,6 +53,7 @@
 import ATextarea from '@/components/atoms/ATextarea.vue';
 import NickNameForm from '@/components/molecules/NickNameForm.vue';
 import MessageItemList from '@/components/molecules/MessageItemList.vue';
+import MoreButton from '@/components/molecules/MoreButton.vue';
 
 import io from 'socket.io-client';
 import { fetchMessagesInRoom, fetchRoomByLink } from '@/services/room-service';
@@ -60,7 +61,9 @@ import { BACKEND_SOCKET_URL } from '@/constants/backend';
 import { mapState } from 'vuex';
 
 export default {
-  components: { ATextarea, NickNameForm, MessageItemList },
+  components: {
+    MoreButton, ATextarea, NickNameForm, MessageItemList,
+  },
   data() {
     return {
       isLive: false,
@@ -71,6 +74,7 @@ export default {
       messages: [],
       connectedUser: 1,
       itsMessageType: '',
+      isPresentationMode: false,
     };
   },
   props: {
@@ -97,6 +101,12 @@ export default {
       sender: 'sender',
       loginUser: 'loginUser',
     }),
+    moreItems() {
+      return [
+        { key: 'LEAVE_ROOM', text: 'Leave this room' },
+        { key: 'PRESENTATION_ON', text: 'Presentation Mode' },
+      ];
+    },
     nickname() {
       return this.sender.nickname;
     },
@@ -178,8 +188,20 @@ export default {
         });
       }
     },
+    onClickMoreItem(type) {
+      switch (type) {
+        case 'LEAVE_ROOM':
+          this.$store.dispatch('clearSender');
+          this.$router.push('/');
+          break;
+        case 'PRESENTATION_ON':
+          this.isPresentationMode = !this.isPresentationMode;
+          break;
+        default:
+          break;
+      }
+    },
   },
-
 };
 </script>
 
@@ -197,16 +219,34 @@ fieldset {
 }
 
 .toolbar-wrapper {
+  position: relative;
   background-color: $main-color-dark;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  .connection-bar-title {
+    flex: 1;
+    font-size: .88em;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 2em;
+  }
+
+  .more-button-wrapper {
+    width: 25px;
+    height: 100%;
+    padding-right: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
 .message-list-wrapper {
   flex: 1;
-  // margin-top: 40px;
   padding: 10px 0;
   overflow-y: scroll;
 }
@@ -237,23 +277,8 @@ fieldset {
   }
 }
 
-
 button {
   height: inherit;
-  // > .md-ripple {
-  //   position: absolute;
-  //   top: 50%;
-  //   transform: translateY(-50%);
-  // }
-}
-
-.connection-bar-title {
-  flex: 1;
-  font-size: .88em;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 1em;
 }
 
 fieldset {
@@ -311,8 +336,6 @@ fieldset {
   }
 }
 
-
-///
 #btn-submit-wrapper {
   display: flex;
   justify-content: center;

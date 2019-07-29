@@ -42,5 +42,9 @@ export default new Vuex.Store({
       localStorage.setItem('sender', JSON.stringify(sender));
       commit('setSender', sender);
     },
+    clearSender({ commit }) {
+      localStorage.removeItem('sender');
+      commit('setSender', { nickname: null });
+    },
   },
 });
