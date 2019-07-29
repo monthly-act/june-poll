@@ -50,7 +50,6 @@ export default {
   justify-content: flex-start;
   padding: .45em .9em;
   align-items: flex-end;
-
   &.msg-good {
     flex-direction: row;
     p {
@@ -74,6 +73,7 @@ export default {
     p {
       display: inline-block;
       position: relative;
+      width: 100%;
       &::before {
         content: 'Question';
         align-items: center;
