@@ -23,29 +23,29 @@
         <message-item-list :messages="messages" />
       </div>
 
-    <div class="message-input-wrapper">
-      <fieldset>
-        <a-textarea class="message-input" v-model="message" autoresize/>
-        <div id='btn-submit-wrapper'>
-          <button class='btn-submit' id='btn-question'
-                  @click="sendMessage(itsMessageType = 'question')"
-                  :disabled="!isLive">
-            Question
-          </button>
-          <button class='btn-submit' id='btn-negative'
-                  @click="sendMessage(itsMessageType = 'negative')"
-                  :disabled="!isLive">
-            Dislike
-          </button>
-          <button class='btn-submit' id='btn-positive'
-                  @click="sendMessage(itsMessageType = 'positive')"
-                  :disabled="!isLive">
-            Like
-          </button>
-        </div>
-      </fieldset>
+      <div class="message-input-wrapper">
+        <fieldset>
+          <a-textarea class="message-input" v-model="message" autoresize/>
+          <div id='btn-submit-wrapper'>
+            <button class='btn-submit' id='btn-question'
+                    @click="sendMessage(itsMessageType = 'question')"
+                    :disabled="!isLive">
+              Question
+            </button>
+            <button class='btn-submit' id='btn-negative'
+                    @click="sendMessage(itsMessageType = 'negative')"
+                    :disabled="!isLive">
+              Dislike
+            </button>
+            <button class='btn-submit' id='btn-positive'
+                    @click="sendMessage(itsMessageType = 'positive')"
+                    :disabled="!isLive">
+              Like
+            </button>
+          </div>
+        </fieldset>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 

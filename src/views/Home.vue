@@ -24,7 +24,7 @@
         class="button-wrapper"
         @click="onClickSignIn" />
     </div>
-    <div class="speed-dial-wrapper" v-else>
+    <div class="speed-dial-wrapper" v-else > 
       <signed-user-menu-button :filters="['JOIN_ROOM']"/>
     </div>
   </div>
