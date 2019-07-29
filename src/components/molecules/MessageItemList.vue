@@ -1,10 +1,14 @@
 <template>
   <div class="msg-box">
     <div :class="['message-item',
-    {'msg-good': msg.status === 'GOOD', 'msg-bad': msg.status === 'BAD', 'msg-q': msg.status === 'QUESTION'}]"
+                  {'msg-good': msg.status === 'GOOD',
+                   'msg-bad': msg.status === 'BAD',
+                   'msg-q': msg.status === 'QUESTION'}
+                  ]"
          v-for="msg in messages"
          :key="msg.id">
       <p>{{msg.msg}}</p>
+      <span>{{`/${msg.sender}/`}}</span>
       <span>{{msg.createDate | date_format}}</span>
     </div>
   </div>
@@ -33,8 +37,9 @@ export default {
   max-width: 60%;
   border-radius: 1.5em;
   padding: .7em .9em;
-  word-break: break-word;
   text-align: left;
+  word-break: break-word;
+  white-space: pre-line;
 }
 
 .msg-box {
@@ -102,8 +107,8 @@ export default {
       color: #fff;
       max-width: 100%;
       padding: .7em .9em .7em 7em;
-      word-break: break-word;
       text-align: left;
+      white-space: pre-line;
     }
     span {
       display: none;

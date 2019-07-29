@@ -2,6 +2,7 @@
   <input class="input-wrapper"
          :placeholder="placeholder"
          :value="value"
+         :maxlength="maxLen"
          @change="onChange">
 </template>
 
@@ -16,6 +17,11 @@ export default {
     placeholder: {
       type: String,
       default: '',
+    },
+  },
+  computed: {
+    maxLen() {
+      return this.maxlength ? this.maxlength : -1;
     },
   },
   methods: {

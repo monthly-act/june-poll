@@ -33,7 +33,7 @@ export default new Vuex.Store({
       sessionStorage.setItem('user', JSON.stringify(user));
       commit('setLoginUser', user);
     },
-    saveSender({ commit }, roomId, nickname) {
+    saveSender({ commit }, { roomId, nickname }) {
       const sender = {
         roomId,
         nickname,

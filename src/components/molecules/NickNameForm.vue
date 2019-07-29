@@ -7,7 +7,7 @@
         <a-label class="nickname-label"
                  text="Nickname" />
         <div class="nickname-input">
-          <a-input v-model="nickname" />
+          <a-input v-model="nickname" maxlength="10"/>
         </div>
       </div>
 

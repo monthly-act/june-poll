@@ -1,9 +1,9 @@
 <template>
   <div>
+    {{nickname}}
     <div class="nickname-wrapper" v-if="!nickname">
       <nick-name-form @change="onChangeNickname"/>
     </div>
-
     <div class="room-wrapper" v-else>
       <div class="toolbar-wrapper">
         <div class="connection-status">
@@ -24,7 +24,7 @@
 
     <div class="message-input-wrapper">
       <fieldset>
-        <textarea v-model="message" cols="40" rows='1'></textarea>
+        <a-textarea class="message-input" v-model="message" autoresize/>
         <div id='btn-submit-wrapper'>
           <button class='btn-submit' id='btn-question'
                   @click="sendMessage(itsMessageType = 'question')"
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import ATextarea from '@/components/atoms/ATextarea.vue';
 import NickNameForm from '@/components/molecules/NickNameForm.vue';
 import MessageItemList from '@/components/molecules/MessageItemList.vue';
 
@@ -58,13 +59,12 @@ import { BACKEND_SOCKET_URL } from '@/constants/backend';
 import { mapState } from 'vuex';
 
 export default {
-  components: { NickNameForm, MessageItemList },
+  components: { ATextarea, NickNameForm, MessageItemList },
   data() {
     return {
       isLive: false,
       title: 'not found',
       owner: null,
-      // isGood: true,
       message: '',
       oldMessages: [],
       messages: [],
@@ -99,17 +99,17 @@ export default {
     nickname() {
       return this.sender.nickname;
     },
-    statusText() {
-      return this.isGood ? 'GOOD' : 'BAD';
-    },
     messageType() {
       if (this.itsMessageType === 'positive') {
         return 'GOOD';
-      } if (this.itsMessageType === 'negative') {
+      }
+      if (this.itsMessageType === 'negative') {
         return 'BAD';
-      } if (this.itsMessageType === 'question') {
+      }
+      if (this.itsMessageType === 'question') {
         return 'QUESTION';
       }
+      return '';
     },
     isOwner() {
       if (!this.loginUser) {
@@ -130,7 +130,7 @@ export default {
       }
     },
     onChangeNickname(nickname) {
-      this.$store.dispatch('saveSender', nickname);
+      this.$store.dispatch('saveSender', { roomId: this.roomId, nickname });
 
       this.initChatRoom();
     },
@@ -154,15 +154,11 @@ export default {
         this.messages.push({
           id, status, msg, sender, createDate,
         });
-        console.log(this.messages);
       });
     },
-    sendMessage(msgType) {
-      console.log('show me the msgType :::: ', msgType);
-
+    sendMessage() {
       if (!this.message) return;
 
-      console.log('///// this.statusText', this.messageType, this.message, this.myName, this.roomId);
       this.socket.emit('message', {
         status: this.messageType,
         msg: this.message,
@@ -201,6 +197,10 @@ fieldset {
 
 .toolbar-wrapper {
   background-color: $main-color-dark;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .message-list-wrapper {
@@ -218,14 +218,14 @@ fieldset {
   fieldset {
     padding-top: 0;
     margin-bottom: 0;
-    textarea {
+    .message-input {
       max-height: 5em;
       background: #fff;
       margin: 0.1em 0 .5em;
       border-radius: 1em;
       width: calc(100vw - 20px);
-      padding: .2em;
-      min-height: 2em;
+      padding: .6em;
+      /*min-height: 2em;*/
     }
     > div {
       display: block;
