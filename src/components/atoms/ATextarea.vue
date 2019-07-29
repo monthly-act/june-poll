@@ -6,7 +6,8 @@
     name="textarea"
     cols="40"
     rows="1"
-    @input="input($event.target.value)"/>
+    @input="input($event.target.value)">
+  </textarea>
 </template>
 
 <script>
