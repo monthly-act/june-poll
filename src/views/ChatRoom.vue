@@ -1,54 +1,61 @@
 <template>
-  <div class="room-wrapper">
-    <div class="toolbar-wrapper">
-      <div class="connection-status">
-        <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
-        <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
-      </div>
-      <div class="connection-bar-title">
-        <span>{{title}}</span>
-        <span>{{`접속: ${connectedUser} 명`}}</span>
-      </div>
+  <div>
+    <div class="nickname-wrapper" v-if="!nickname">
+      <nick-name-form @change="onChangeNickname"/>
     </div>
 
-    <div class="message-list-wrapper">
-      <message-item-list :messages="oldMessages" />
-      <message-item-list :messages="messages" />
-    </div>
+    <div class="room-wrapper" v-else>
+      <div class="toolbar-wrapper">
+        <div class="connection-status">
+          <img v-if="isLive" src="@/assets/junepoll_roomstate_connected.png">
+          <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
+        </div>
+        <div class="connection-bar-title">
+          <span>{{isOwner?'👑':''}}</span>
+          <span>{{title}}</span>
+          <span>{{`접속: ${connectedUser} 명`}}</span>
+        </div>
+      </div>
 
-    <div class="message-input-wrapper">
-      <fieldset>
-        <textarea v-model="message" cols="40"></textarea>
-        <input id='feedback-like' type="radio" v-model="isGood" v-bind:value='true'>
-        <label for='feedback-like'>Good</label>
-        <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
-        <label for='feedback-dislike'>Bad</label>
-        <button @click="sendMessage" :disabled="!isLive">send</button>
-      </fieldset>
+      <div class="message-list-wrapper">
+        <message-item-list :messages="oldMessages" />
+        <message-item-list :messages="messages" />
+      </div>
+
+      <div class="message-input-wrapper">
+        <fieldset>
+          <textarea v-model="message" cols="40"></textarea>
+          <input id='feedback-like' type="radio" v-model="isGood" v-bind:value='true'>
+          <label for='feedback-like'>Good</label>
+          <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
+          <label for='feedback-dislike'>Bad</label>
+          <button @click="sendMessage" :disabled="!isLive">send</button>
+        </fieldset>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import NickNameForm from '@/components/molecules/NickNameForm.vue';
+import MessageItemList from '@/components/molecules/MessageItemList.vue';
+
 import io from 'socket.io-client';
 import { fetchMessagesInRoom, fetchRoomByLink } from '@/services/room-service';
 import { BACKEND_SOCKET_URL } from '@/constants/backend';
-import uuidv4 from 'uuid/v4';
-
-import MessageItemList from '@/components/molecules/MessageItemList.vue';
-
+import { mapState } from 'vuex';
 
 export default {
-  components: { MessageItemList },
+  components: { NickNameForm, MessageItemList },
   data() {
     return {
       isLive: false,
       title: 'not found',
+      owner: null,
       isGood: true,
       message: '',
       oldMessages: [],
       messages: [],
-      myName: '',
       connectedUser: 1,
     };
   },
@@ -59,16 +66,12 @@ export default {
     },
   },
   async mounted() {
-    this.myName = uuidv4();
-
-    const roomInfo = await fetchRoomByLink(this.roomId);
-    if (roomInfo) {
-      this.title = roomInfo.title;
-
-      this.fetchOldMessages();
-
-      this.onSocket();
+    if (this.nickname) {
+      this.initChatRoom();
     }
+  },
+  updated() {
+    this.scrollToBottom();
   },
   beforeDestroy() {
     if (this.socket) {
@@ -76,14 +79,39 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      sender: 'sender',
+      loginUser: 'loginUser',
+    }),
+    nickname() {
+      return this.sender.nickname;
+    },
     statusText() {
       return this.isGood ? 'GOOD' : 'BAD';
     },
-  },
-  updated() {
-    this.scrollToBottom();
+    isOwner() {
+      if (!this.loginUser) {
+        return false;
+      }
+      return this.loginUser.email === this.owner;
+    },
   },
   methods: {
+    async initChatRoom() {
+      const roomInfo = await fetchRoomByLink(this.roomId);
+      if (roomInfo) {
+        this.owner = roomInfo.owner;
+        this.title = roomInfo.title;
+
+        this.fetchOldMessages();
+        this.onSocket();
+      }
+    },
+    onChangeNickname(nickname) {
+      this.$store.dispatch('saveSender', nickname);
+
+      this.initChatRoom();
+    },
     async fetchOldMessages() {
       this.oldMessages = await fetchMessagesInRoom(this.roomId);
     },
@@ -91,13 +119,13 @@ export default {
       this.socket = io(BACKEND_SOCKET_URL, {
         query: `r_var=${this.roomId}`,
       });
+
       this.socket.on('connect', () => {
         this.isLive = true;
       });
       this.socket.on('connected_user_count', (count) => {
         this.connectedUser = count;
       });
-
       this.socket.on('message', ({
         id, status, msg, sender, createDate,
       }) => {
@@ -112,7 +140,7 @@ export default {
       this.socket.emit('message', {
         status: this.statusText,
         msg: this.message,
-        sender: this.myName,
+        sender: this.nickname,
         roomId: this.roomId,
       }, (data) => {
         console.log(data);
@@ -121,9 +149,11 @@ export default {
     },
     scrollToBottom() {
       const list = this.$el.querySelector('.message-list-wrapper');
-      list.scrollTo({
-        top: list.scrollHeight,
-      });
+      if (list) {
+        list.scrollTo({
+          top: list.scrollHeight,
+        });
+      }
     },
   },
 
@@ -174,7 +204,6 @@ export default {
     }
   }
 }
-
 
 
 button {
