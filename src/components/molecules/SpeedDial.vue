@@ -70,6 +70,7 @@ export default {
       &.expanded {
         transform: rotate(45deg);
         background-color: #fff;
+        border-color: #fff;
       }
     }
   }
@@ -92,25 +93,29 @@ export default {
       padding-right: 0.8125em;
     }
     .item-button {
-      background: url('../../assets/ico_settings.png') center no-repeat;
-      border-radius: 1em;
+      background: #fff url('../../assets/ico-setting@3x.png') center no-repeat;
+      border-radius: 2em;
       cursor: pointer;
       padding: 1.2em;
+      background-size: 1.65em;
       &:hover {
         background-color: #fff;
       }
       &.CREATE_ROOM {
-        background: url('../../assets/ico_create_a_room.png') center no-repeat;
+        background: #fff url('../../assets/ico-addroom@3x.png') center no-repeat;
+        background-size: 1.5em;
       }
       &.SIGN_OUT {
-        background: url('../../assets/ico_logout.png') center no-repeat;
+        background: #fff url('../../assets/ico-loggout@3x.png') center no-repeat;
+        background-size: 1.6em;
       }
     }
   }
   #speed-dial-add-button {
-    background-image: url('../../assets/ico-add.png');
+    background-image: url('../../assets/ico-add@3x.png');
     background-position: center;
     background-repeat: no-repeat;
+    background-size: 1.6em;
   }
 }
 </style>
