@@ -26,9 +26,9 @@
         <input id='feedback-dislike' type="radio" v-model="isGood" v-bind:value='false'>
         <label for='feedback-dislike'>Bad</label> -->
         <div id='btn-submit-wrapper'>
-          <button class='btn-submit' id='btn-question' @click="sendMessage(MessageType = 'question')" :disabled="!isLive">Question</button>
-          <button class='btn-submit' id='btn-negative' @click="sendMessage(MessageType = 'negative')" :disabled="!isLive">Dislike</button>
-          <button class='btn-submit' id='btn-positive' @click="sendMessage(MessageType = 'positive')" :disabled="!isLive">Like</button>
+          <button class='btn-submit' id='btn-question' @click="sendMessage(itsMessageType = 'question')" :disabled="!isLive">Question</button>
+          <button class='btn-submit' id='btn-negative' @click="sendMessage(itsMessageType = 'negative')" :disabled="!isLive">Dislike</button>
+          <button class='btn-submit' id='btn-positive' @click="sendMessage(itsMessageType = 'positive')" :disabled="!isLive">Like</button>
         </div>
       </fieldset>
     </div>
@@ -50,13 +50,13 @@ export default {
     return {
       isLive: false,
       title: 'not found',
-      isGood: true,
+      // isGood: true,
       message: '',
       oldMessages: [],
       messages: [],
       myName: '',
       connectedUser: 1,
-      MessageType: ''
+      itsMessageType: ''
     };
   },
   props: {
@@ -85,16 +85,14 @@ export default {
   computed: {
     statusText() {
       return this.isGood ? 'GOOD' : 'BAD';
-      
     },
-    MessageType() {
-      console.log('checking is good ???', this.isGood);
-      if (this.messageType === 'positive') {
+    messageType() {
+      if (this.itsMessageType === 'positive') {
         return 'GOOD';
-      } else if (this.messageType === 'negative') {
+      } else if (this.itsMessageType === 'negative') {
         return 'BAD';
-      } else if (this.messageType === 'question') {
-        return 'QQ';
+      } else if (this.itsMessageType === 'question') {
+        return 'QUESTION';
       }
     },
   },
@@ -131,9 +129,9 @@ export default {
       
       if (!this.message) return;
 
-      console.log('/////', this.statusText, this.message, this.myName, this.roomId);
+      console.log('///// this.statusText', this.messageType, this.message, this.myName, this.roomId);
       this.socket.emit('message', {
-        status: this.statusText,
+        status: this.messageType,
         msg: this.message,
         sender: this.myName,
         roomId: this.roomId,
@@ -271,13 +269,11 @@ fieldset {
 }
 
 .connection-status {
-  width: 20px;
-  height: 20px;
-  margin: 0 10px;
+  margin: .3em;
   img {
-    height: 20px;
-    width: 20px;
-    margin: 0 10px;
+    height: 1em;
+    margin: .3em;
+    width: 1.25em;
   }
 }
 
