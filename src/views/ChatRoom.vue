@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{nickname}}
+    <span id='name-nickname'>{{nickname}}</span>
     <div class="nickname-wrapper" v-if="!nickname">
       <nick-name-form @change="onChangeNickname"/>
     </div>
@@ -11,8 +11,9 @@
           <img v-else src="@/assets/junepoll_roomstate_disconnected.png">
         </div>
         <div class="connection-bar-title">
-          <span>{{isOwner?'👑':''}}</span>
           <span>{{title}}</span>
+          <span class='show-owner' :class="['owner-wrapper',
+                  {'show-owner': isOwner }]">👑</span>
           <span>{{`접속: ${connectedUser} 명`}}</span>
         </div>
       </div>
@@ -63,7 +64,7 @@ export default {
   data() {
     return {
       isLive: false,
-      title: 'not found',
+      title: 'Not found',
       owner: null,
       message: '',
       oldMessages: [],
@@ -222,10 +223,9 @@ fieldset {
       max-height: 5em;
       background: #fff;
       margin: 0.1em 0 .5em;
-      border-radius: 1em;
+      border-radius: 1.5em;
       width: calc(100vw - 20px);
       padding: .6em;
-      /*min-height: 2em;*/
     }
     > div {
       display: block;
@@ -249,11 +249,11 @@ button {
 
 .connection-bar-title {
   flex: 1;
-  font-size: 1em;
+  font-size: .88em;
   color: #fff;
   display: flex;
   justify-content: space-between;
-  padding-right: 30px;
+  padding-right: 1em;
 }
 
 fieldset {
@@ -313,7 +313,6 @@ fieldset {
 
 
 ///
-
 #btn-submit-wrapper {
   display: flex;
   justify-content: center;
@@ -338,6 +337,18 @@ fieldset {
   #btn-question {
     background: none;
     border: 1px solid #fff;
+  }
+}
+
+#name-nickname {
+  color: orange;
+  position: absolute;
+}
+
+.owner-wrapper {
+  display: none;
+  &.show-owner {
+    display: block;
   }
 }
 </style>

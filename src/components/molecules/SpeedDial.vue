@@ -64,7 +64,7 @@ export default {
     .target-button {
       width: 100%;
       height: 100%;
-      border: 1px solid #707070;
+      border: 1px solid $main-color-dark;
       background-color: transparent;
       transition: transform 0.2s;
       &.expanded {
