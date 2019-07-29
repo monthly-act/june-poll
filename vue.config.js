@@ -9,6 +9,7 @@ module.exports = {
           @import '@/styles/base/variables.scss';
           @import '@/styles/base/mixin.scss';
           @import '@/styles/base/base.scss';
+          @import '@/styles/base/font.scss';
         `,
       },
     },
