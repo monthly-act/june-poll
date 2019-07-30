@@ -55,6 +55,8 @@ export default {
   justify-content: flex-start;
   padding: .45em .9em;
   align-items: flex-end;
+  z-index: 1;
+
   &.msg-good {
     flex-direction: row;
     p {
