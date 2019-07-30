@@ -151,6 +151,7 @@ export default {
     onSocket() {
       this.socket = io(BACKEND_SOCKET_URL, {
         query: `r_var=${this.roomId}`,
+        transports: ['websocket'],
       });
 
       this.socket.on('connect', () => {
